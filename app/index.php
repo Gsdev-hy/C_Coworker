@@ -23,8 +23,9 @@ switch ($page) {
         break;
 
     case 'spaces':
-        // TODO: Appeler SpaceController->index()
-        echo '<h2>Liste des espaces (À implémenter)</h2>';
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->index();
         break;
 
     case 'login':

@@ -1,0 +1,22 @@
+# Fichier de passation confidentiel
+AIDE-MEMOIRE-PROJET.md
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+app/config/db.php.local
+logs/
+temp/
+
+# Backup files
+*.bak
+*.tmp
