@@ -190,4 +190,62 @@ class SpaceController
         // Affichage du formulaire
         require_once __DIR__ . '/../views/spaces/edit.php';
     }
+
+    /**
+     * Action : Afficher la page de confirmation de suppression / Traiter la suppression
+     * Route : ?page=spaces-delete&id=X
+     */
+    public function delete()
+    {
+        // Récupération et validation de l'ID
+        $id = $_GET['id'] ?? null;
+
+        if (!$id || !is_numeric($id) || $id <= 0) {
+            $error = "Identifiant d'espace invalide.";
+            require_once __DIR__ . '/../views/errors/404.php';
+            return;
+        }
+
+        // Récupération de l'espace existant
+        $space = Space::findById($id);
+
+        if (!$space) {
+            $error = "L'espace demandé n'existe pas.";
+            require_once __DIR__ . '/../views/errors/404.php';
+            return;
+        }
+
+        // Vérification des réservations futures
+        $hasReservations = Space::hasActiveReservations($id);
+
+        // Traitement de la suppression si POST et pas de réservations
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($hasReservations) {
+                // Bloquer la suppression
+                $error = "Impossible de supprimer cet espace car il possède des réservations futures.";
+            } else {
+                // Supprimer l'espace
+                $success = Space::delete($id);
+
+                if ($success) {
+                    // Démarrer la session si pas déjà fait
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+
+                    // Message flash de succès
+                    $_SESSION['flash_success'] = "L'espace \"{$space['name']}\" a été supprimé avec succès.";
+
+                    // Redirection vers la liste
+                    header('Location: index.php?page=spaces');
+                    exit;
+                } else {
+                    $error = "Une erreur est survenue lors de la suppression de l'espace.";
+                }
+            }
+        }
+
+        // Affichage de la page de confirmation
+        require_once __DIR__ . '/../views/spaces/delete.php';
+    }
 }

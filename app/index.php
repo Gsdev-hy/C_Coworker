@@ -46,6 +46,12 @@ switch ($page) {
         $controller->edit();
         break;
 
+    case 'spaces-delete':
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->delete();
+        break;
+
     case 'login':
         // TODO: Appeler AuthController->login()
         echo '<h2>Connexion (À implémenter)</h2>';

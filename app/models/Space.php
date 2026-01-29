@@ -174,4 +174,67 @@ class Space
             return false;
         }
     }
+
+    /**
+     * Vérifie si un espace a des réservations futures (à partir d'aujourd'hui)
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de l'espace
+     * @return bool True si des réservations futures existent, false sinon
+     */
+    public static function hasActiveReservations($id)
+    {
+        global $pdo;
+
+        if (!is_numeric($id) || $id <= 0) {
+            return false;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                SELECT COUNT(*) as count 
+                FROM reservations 
+                WHERE space_id = :id 
+                AND end_time >= NOW()
+            ");
+
+            $stmt->execute([':id' => (int) $id]);
+            $result = $stmt->fetch();
+
+            return $result['count'] > 0;
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la vérification des réservations pour l'espace #$id : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Supprime un espace de la base de données
+     * Note: Les réservations liées seront supprimées automatiquement (CASCADE)
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de l'espace à supprimer
+     * @return bool True si succès, false sinon
+     */
+    public static function delete($id)
+    {
+        global $pdo;
+
+        // Validation de l'ID
+        if (!is_numeric($id) || $id <= 0) {
+            return false;
+        }
+
+        try {
+            $stmt = $pdo->prepare("DELETE FROM spaces WHERE id = :id");
+            $result = $stmt->execute([':id' => (int) $id]);
+
+            return $result;
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la suppression de l'espace #$id : " . $e->getMessage());
+            return false;
+        }
+    }
 }
