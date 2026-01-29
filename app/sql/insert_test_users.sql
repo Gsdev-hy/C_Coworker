@@ -1,12 +1,12 @@
 -- Script d'insertion d'un utilisateur administrateur de test
--- Mot de passe : admin123 (hashé avec password_hash en PHP)
+-- Mot de passe : admin123
 
 INSERT INTO users (firstname, lastname, email, password, role, created_at) 
 VALUES (
     'Admin', 
     'C\'Coworker', 
     'admin@coworker.com', 
-    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+    '$2y$12$errBPe4.0cEe35dlUFIjfefgaBlzwy/BkyklRRTW9oQY0d53OlLn.u', 
     'admin', 
     NOW()
 );
@@ -18,7 +18,7 @@ VALUES (
     'Jean', 
     'Dupont', 
     'jean.dupont@example.com', 
-    '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', 
+    '$2y$12$1JjM3kcvCfgHh1ezQ2lRB.FZRKnh1/pYQ0A1Xp7uBTM7t97eT0rD2', 
     'user', 
     NOW()
 );
