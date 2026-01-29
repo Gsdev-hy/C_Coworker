@@ -84,13 +84,15 @@
                             </td>
                             <td>
                                 <?php
-                                if ($interval->h > 0) {
-                                    echo $interval->h . 'h';
-                                    if ($interval->i > 0)
-                                        echo ' ' . $interval->i . 'min';
-                                } else {
-                                    echo $interval->i . 'min';
-                                }
+                                $parts = [];
+                                if ($interval->d > 0)
+                                    $parts[] = $interval->d . 'j';
+                                if ($interval->h > 0)
+                                    $parts[] = $interval->h . 'h';
+                                if ($interval->i > 0)
+                                    $parts[] = $interval->i . 'min';
+
+                                echo empty($parts) ? '0min' : implode(' ', $parts);
                                 ?>
                             </td>
                             <td>

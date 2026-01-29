@@ -1,9 +1,11 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Liste des espaces</h2>
-        <a href="index.php?page=spaces-create" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Ajouter un espace
-        </a>
+        <?php if (AuthHelper::isAdmin()): ?>
+            <a href="index.php?page=spaces-create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Ajouter un espace
+            </a>
+        <?php endif; ?>
     </div>
 
     <?php if (empty($spaces)): ?>
@@ -61,15 +63,17 @@
                                     title="Voir les détails">
                                     Détails
                                 </a>
-                                <a href="index.php?page=spaces-edit&id=<?php echo $space['id']; ?>"
-                                    class="btn btn-sm btn-warning" title="Modifier">
-                                    Modifier
-                                </a>
-                                <a href="index.php?page=spaces-delete&id=<?php echo $space['id']; ?>"
-                                    class="btn btn-sm btn-danger" title="Supprimer"
-                                    onclick="return confirm('Voulez-vous vraiment supprimer cet espace ?');">
-                                    Supprimer
-                                </a>
+                                <?php if (AuthHelper::isAdmin()): ?>
+                                    <a href="index.php?page=spaces-edit&id=<?php echo $space['id']; ?>"
+                                        class="btn btn-sm btn-warning" title="Modifier">
+                                        Modifier
+                                    </a>
+                                    <a href="index.php?page=spaces-delete&id=<?php echo $space['id']; ?>"
+                                        class="btn btn-sm btn-danger" title="Supprimer"
+                                        onclick="return confirm('Voulez-vous vraiment supprimer cet espace ?');">
+                                        Supprimer
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

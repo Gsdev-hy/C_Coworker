@@ -6,7 +6,7 @@ VALUES (
     'Admin', 
     'C\'Coworker', 
     'admin@coworker.com', 
-    '$2y$12$errBPe4.0cEe35dlUFIjfefgaBlzwy/BkyklRRTW9oQY0d53OlLn.u', 
+    '$2y$12$fuJHnbYwsWs4b6ZCku8DAOo86py2qfrj3B6D6k4z7QnoS1ff/.09K', 
     'admin', 
     NOW()
 );
@@ -18,7 +18,7 @@ VALUES (
     'Jean', 
     'Dupont', 
     'jean.dupont@example.com', 
-    '$2y$12$1JjM3kcvCfgHh1ezQ2lRB.FZRKnh1/pYQ0A1Xp7uBTM7t97eT0rD2', 
+    '$2y$12$OXFrAHN8.r2IPfMt0JjYbOPVGmZYZBCi6GbFMC83GLo2Mq.tnc2Tq', 
     'user', 
     NOW()
 );
