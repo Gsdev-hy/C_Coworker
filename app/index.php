@@ -1,8 +1,10 @@
 <?php
 // Point d'entrée de l'application
 
-// 1. Inclusion de la config
+// 1. Inclusion de la config et des fichiers essentiels
 require_once 'config/db.php';
+require_once 'models/Space.php';
+require_once 'helpers/AuthHelper.php';
 
 // 2. Gestion simple du routing
 $page = $_GET['page'] ?? 'home';

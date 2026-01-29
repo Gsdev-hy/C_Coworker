@@ -16,6 +16,7 @@ class SpaceController
      */
     public function index()
     {
+        AuthHelper::requireLogin();
         // Récupération de tous les espaces depuis le modèle
         $spaces = Space::findAll();
 
@@ -29,6 +30,7 @@ class SpaceController
      */
     public function create()
     {
+        AuthHelper::requireAdmin();
         // Initialisation des variables pour la vue
         $errors = [];
         $success = false;
@@ -88,6 +90,7 @@ class SpaceController
      */
     public function show()
     {
+        AuthHelper::requireLogin();
         // Récupération et validation de l'ID
         $id = $_GET['id'] ?? null;
 
@@ -118,6 +121,7 @@ class SpaceController
      */
     public function edit()
     {
+        AuthHelper::requireAdmin();
         // Récupération et validation de l'ID
         $id = $_GET['id'] ?? null;
 
@@ -197,6 +201,7 @@ class SpaceController
      */
     public function delete()
     {
+        AuthHelper::requireAdmin();
         // Récupération et validation de l'ID
         $id = $_GET['id'] ?? null;
 

@@ -17,17 +17,7 @@ class ReservationController
      */
     public function index()
     {
-        // Démarrer la session si pas déjà fait
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Vérifier que l'utilisateur est connecté
-        if (!isset($_SESSION['user'])) {
-            $_SESSION['flash_error'] = "Vous devez être connecté pour accéder à cette page.";
-            header('Location: index.php?page=login');
-            exit;
-        }
+        AuthHelper::requireLogin();
 
         $user = $_SESSION['user'];
 
@@ -48,17 +38,7 @@ class ReservationController
      */
     public function create()
     {
-        // Démarrer la session si pas déjà fait
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Vérifier que l'utilisateur est connecté
-        if (!isset($_SESSION['user'])) {
-            $_SESSION['flash_error'] = "Vous devez être connecté pour créer une réservation.";
-            header('Location: index.php?page=login');
-            exit;
-        }
+        AuthHelper::requireLogin();
 
         $user = $_SESSION['user'];
 
@@ -138,17 +118,7 @@ class ReservationController
      */
     public function edit()
     {
-        // Démarrer la session si pas déjà fait
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Vérifier que l'utilisateur est connecté
-        if (!isset($_SESSION['user'])) {
-            $_SESSION['flash_error'] = "Vous devez être connecté pour modifier une réservation.";
-            header('Location: index.php?page=login');
-            exit;
-        }
+        AuthHelper::requireLogin();
 
         $user = $_SESSION['user'];
 
@@ -239,17 +209,7 @@ class ReservationController
      */
     public function delete()
     {
-        // Démarrer la session si pas déjà fait
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Vérifier que l'utilisateur est connecté
-        if (!isset($_SESSION['user'])) {
-            $_SESSION['flash_error'] = "Vous devez être connecté pour supprimer une réservation.";
-            header('Location: index.php?page=login');
-            exit;
-        }
+        AuthHelper::requireLogin();
 
         $user = $_SESSION['user'];
 
