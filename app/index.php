@@ -82,6 +82,12 @@ switch ($page) {
         $controller->edit();
         break;
 
+    case 'reservations-delete':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->delete();
+        break;
+
     default:
         echo '<div class="alert alert-danger">Page introuvable (404)</div>';
 }

@@ -232,4 +232,59 @@ class ReservationController
         // Inclusion de la vue
         require_once __DIR__ . '/../views/reservations/edit.php';
     }
+
+    /**
+     * Action : Supprimer une réservation
+     * Route : ?page=reservations-delete&id=X
+     */
+    public function delete()
+    {
+        // Démarrer la session si pas déjà fait
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Vérifier que l'utilisateur est connecté
+        if (!isset($_SESSION['user'])) {
+            $_SESSION['flash_error'] = "Vous devez être connecté pour supprimer une réservation.";
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $user = $_SESSION['user'];
+
+        // Récupération et validation de l'ID
+        $id = $_GET['id'] ?? null;
+        if (!$id || !is_numeric($id) || $id <= 0) {
+            $_SESSION['flash_error'] = "Identifiant de réservation invalide.";
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+
+        // Récupération de la réservation
+        $reservation = Reservation::findById($id);
+        if (!$reservation) {
+            $_SESSION['flash_error'] = "La réservation demandée n'existe pas.";
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+
+        // Vérifier les droits (admin ou propriétaire)
+        if ($user['role'] !== 'admin' && $user['id'] != $reservation['user_id']) {
+            $_SESSION['flash_error'] = "Vous n'avez pas l'autorisation de supprimer cette réservation.";
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+
+        // Suppression
+        if (Reservation::delete($id)) {
+            $_SESSION['flash_success'] = "Réservation annulée avec succès.";
+        } else {
+            $_SESSION['flash_error'] = "Une erreur est survenue lors de l'annulation.";
+        }
+
+        // Redirection vers la liste
+        header('Location: index.php?page=reservations');
+        exit;
+    }
 }

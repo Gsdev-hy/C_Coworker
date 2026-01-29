@@ -249,4 +249,29 @@ class Reservation
             return false;
         }
     }
+
+    /**
+     * Supprime une réservation
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de la réservation
+     * @return bool True si succès, false sinon
+     */
+    public static function delete($id)
+    {
+        global $pdo;
+
+        if (!is_numeric($id) || $id <= 0) {
+            return false;
+        }
+
+        try {
+            $stmt = $pdo->prepare("DELETE FROM reservations WHERE id = :id");
+            return $stmt->execute([':id' => (int) $id]);
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la suppression de la réservation #$id : " . $e->getMessage());
+            return false;
+        }
+    }
 }
