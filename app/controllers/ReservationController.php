@@ -105,6 +105,13 @@ class ReservationController
                 if ($start < $now) {
                     $errors[] = "Vous ne pouvez pas créer une réservation dans le passé.";
                 }
+
+                // Vérifier la disponibilité (MA2-16)
+                if (empty($errors)) {
+                    if (!Reservation::isAvailable($data['space_id'], $data['start_time'], $data['end_time'])) {
+                        $errors[] = "Cet espace est déjà réservé sur ce créneau horaire. Veuillez choisir un autre moment ou un autre espace.";
+                    }
+                }
             }
 
             // Si pas d'erreurs, créer la réservation

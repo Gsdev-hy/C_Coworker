@@ -133,4 +133,51 @@ class Reservation
             return false;
         }
     }
+    /**
+     * Vérifie si un créneau est disponible pour un espace donné
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $spaceId ID de l'espace
+     * @param string $startTime Date et heure de début (Y-m-d H:i:s)
+     * @param string $endTime Date et heure de fin (Y-m-d H:i:s)
+     * @param int|null $excludeId ID de réservation à exclure (utile pour la modification)
+     * @return bool True si disponible, false si conflit
+     */
+    public static function isAvailable($spaceId, $startTime, $endTime, $excludeId = null)
+    {
+        global $pdo;
+
+        try {
+            $sql = "
+                SELECT COUNT(*) as count 
+                FROM reservations 
+                WHERE space_id = :space_id 
+                AND (:start_time < end_time AND :end_time > start_time)
+            ";
+
+            if ($excludeId) {
+                $sql .= " AND id != :exclude_id";
+            }
+
+            $stmt = $pdo->prepare($sql);
+            $params = [
+                ':space_id' => (int) $spaceId,
+                ':start_time' => $startTime,
+                ':end_time' => $endTime
+            ];
+
+            if ($excludeId) {
+                $params[':exclude_id'] = (int) $excludeId;
+            }
+
+            $stmt->execute($params);
+            $result = $stmt->fetch();
+
+            return $result['count'] == 0;
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la vérification de disponibilité : " . $e->getMessage());
+            return false;
+        }
+    }
 }
