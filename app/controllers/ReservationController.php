@@ -131,4 +131,105 @@ class ReservationController
         // Affichage du formulaire
         require_once __DIR__ . '/../views/reservations/create.php';
     }
+
+    /**
+     * Action : Afficher le formulaire de modification / Traiter la soumission
+     * Route : ?page=reservations-edit&id=X
+     */
+    public function edit()
+    {
+        // Démarrer la session si pas déjà fait
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Vérifier que l'utilisateur est connecté
+        if (!isset($_SESSION['user'])) {
+            $_SESSION['flash_error'] = "Vous devez être connecté pour modifier une réservation.";
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $user = $_SESSION['user'];
+
+        // Récupération et validation de l'ID
+        $id = $_GET['id'] ?? null;
+        if (!$id || !is_numeric($id) || $id <= 0) {
+            $_SESSION['flash_error'] = "Identifiant de réservation invalide.";
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+
+        // Récupération de la réservation
+        $reservation = Reservation::findById($id);
+        if (!$reservation) {
+            $_SESSION['flash_error'] = "La réservation demandée n'existe pas.";
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+
+        // Vérifier les droits (admin ou propriétaire)
+        if ($user['role'] !== 'admin' && $user['id'] != $reservation['user_id']) {
+            $_SESSION['flash_error'] = "Vous n'avez pas l'autorisation de modifier cette réservation.";
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+
+        // Récupérer tous les espaces pour le formulaire
+        $spaces = Space::findAll();
+
+        // Initialisation des erreurs
+        $errors = [];
+
+        // Traitement du formulaire si POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'space_id' => $_POST['space_id'] ?? '',
+                'start_time' => ($_POST['start_date'] ?? '') . ' ' . ($_POST['start_time'] ?? ''),
+                'end_time' => ($_POST['end_date'] ?? '') . ' ' . ($_POST['end_time'] ?? '')
+            ];
+
+            // Validation simple
+            if (empty($data['space_id']))
+                $errors[] = "L'espace est obligatoire.";
+            if (empty($_POST['start_date']) || empty($_POST['start_time']))
+                $errors[] = "Le début est obligatoire.";
+            if (empty($_POST['end_date']) || empty($_POST['end_time']))
+                $errors[] = "La fin est obligatoire.";
+
+            if (empty($errors)) {
+                $start = new DateTime($data['start_time']);
+                $end = new DateTime($data['end_time']);
+
+                if ($end <= $start) {
+                    $errors[] = "La fin doit être après le début.";
+                }
+
+                // Vérifier la disponibilité (en excluant la réservation actuelle)
+                if (empty($errors)) {
+                    if (!Reservation::isAvailable($data['space_id'], $data['start_time'], $data['end_time'], $id)) {
+                        $errors[] = "Ce créneau n'est pas disponible pour cet espace.";
+                    }
+                }
+            }
+
+            if (empty($errors)) {
+                if (Reservation::update($id, $data)) {
+                    $_SESSION['flash_success'] = "Réservation modifiée avec succès.";
+                    header('Location: index.php?page=reservations');
+                    exit;
+                } else {
+                    $errors[] = "Erreur lors de la mise à jour.";
+                }
+            }
+
+            // Re-remplir la réservation avec les données POST pour la vue en cas d'erreur
+            $reservation['space_id'] = $data['space_id'];
+            $reservation['start_time'] = $data['start_time'];
+            $reservation['end_time'] = $data['end_time'];
+        }
+
+        // Inclusion de la vue
+        require_once __DIR__ . '/../views/reservations/edit.php';
+    }
 }

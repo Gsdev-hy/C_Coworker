@@ -180,4 +180,73 @@ class Reservation
             return false;
         }
     }
+
+    /**
+     * Récupère une réservation par son ID
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de la réservation
+     * @return array|null Données de la réservation ou null si non trouvée
+     */
+    public static function findById($id)
+    {
+        global $pdo;
+
+        if (!is_numeric($id) || $id <= 0) {
+            return null;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                SELECT * FROM reservations WHERE id = :id
+            ");
+
+            $stmt->execute([':id' => (int) $id]);
+            $reservation = $stmt->fetch();
+
+            return $reservation ?: null;
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la récupération de la réservation #$id : " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Met à jour une réservation existante
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @param int $id ID de la réservation
+     * @param array $data Nouvelles données
+     * @return bool True si succès, false sinon
+     */
+    public static function update($id, $data)
+    {
+        global $pdo;
+
+        if (!is_numeric($id) || $id <= 0) {
+            return false;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                UPDATE reservations 
+                SET space_id = :space_id, 
+                    start_time = :start_time, 
+                    end_time = :end_time
+                WHERE id = :id
+            ");
+
+            return $stmt->execute([
+                ':id' => (int) $id,
+                ':space_id' => (int) $data['space_id'],
+                ':start_time' => $data['start_time'],
+                ':end_time' => $data['end_time']
+            ]);
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la mise à jour de la réservation #$id : " . $e->getMessage());
+            return false;
+        }
+    }
 }

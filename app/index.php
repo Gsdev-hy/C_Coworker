@@ -76,6 +76,12 @@ switch ($page) {
         $controller->create();
         break;
 
+    case 'reservations-edit':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->edit();
+        break;
+
     default:
         echo '<div class="alert alert-danger">Page introuvable (404)</div>';
 }
