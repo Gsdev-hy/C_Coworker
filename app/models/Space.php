@@ -15,7 +15,7 @@ class Space
      */
     public static function findAll()
     {
-        global $pdo;
+        global $pdo;  // Je sais, c'est pas clean, mais temporaire
 
         try {
             $stmt = $pdo->prepare("

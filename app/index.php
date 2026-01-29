@@ -53,8 +53,15 @@ switch ($page) {
         break;
 
     case 'login':
-        // TODO: Appeler AuthController->login()
-        echo '<h2>Connexion (À implémenter)</h2>';
+        require_once 'controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->login();
+        break;
+
+    case 'logout':
+        require_once 'controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->logout();
         break;
 
     default:
