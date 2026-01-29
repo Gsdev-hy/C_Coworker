@@ -64,6 +64,18 @@ switch ($page) {
         $controller->logout();
         break;
 
+    case 'reservations':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->index();
+        break;
+
+    case 'reservations-create':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->create();
+        break;
+
     default:
         echo '<div class="alert alert-danger">Page introuvable (404)</div>';
 }
