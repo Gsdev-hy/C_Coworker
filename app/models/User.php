@@ -51,4 +51,23 @@ class User
     {
         return isset($user['role']) && $user['role'] === 'admin';
     }
+
+    /**
+     * Compte le nombre total d'utilisateurs
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @return int Nombre d'utilisateurs
+     */
+    public static function countAll()
+    {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->query("SELECT COUNT(*) as count FROM users");
+            $result = $stmt->fetch();
+            return (int) $result['count'];
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
 }

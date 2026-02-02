@@ -308,4 +308,23 @@ class Reservation
             return false;
         }
     }
+
+    /**
+     * Compte le nombre de réservations actives (futures ou en cours)
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @return int Nombre de réservations actives
+     */
+    public static function countActive()
+    {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->query("SELECT COUNT(*) as count FROM reservations WHERE end_time >= NOW()");
+            $result = $stmt->fetch();
+            return (int) $result['count'];
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
 }

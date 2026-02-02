@@ -1,27 +1,43 @@
-# Changelog - C'Coworker
+# 📜 Journal des Modifications (Changelog)
 
-Toutes les modifications notables apportées à ce projet seront documentées dans ce fichier.
+Salut ! Ici on note tout ce qui change dans le projet. C'est un peu le journal de bord du capitaine.
 
-## [Unreleased]
+---
 
-### Ajouté
-- **Conception UML complète** : Diagrammes de Cas d'Utilisation, de Classes, de Séquence et d'Activités (Fichiers `.md` + Infographies).
-- **Wireframes** : Spécification détaillée des pages et composants, Index avec images (Login, Dashboard) et ASCII art pour toutes les autres vues.
-- **Conception MERISE** : Fichiers descriptifs textuels pour MCD, MLD et MPD.
+## [Unreleased] - En cours de dev 🚧
+### ✨ Nouveautés
+- **MA2-27 Planning Hebdo** : On peut enfin voir la semaine complète d'un coup d'œil ! 📅 Ajout d'une vue grille avec navigation entre les semaines.
+- **MA2-18 Dashboard Admin** : La tour de contrôle est là ! 🏰 Statistiques en temps réel (nombre de users, d'espaces, réservations actives). C'est beau, c'est propre.
 
-## [0.2.0] - 2026-01-28 - Structure MVC
+### 🐛 Corrections
+- **Timezone Fix** : PHP croyait qu'on était à Londres... J'ai forcé `Europe/Paris` pour qu'il arrête de marquer les réservations de 15h comme "À venir" quand il est 15h30. 🕰️
+- **Durée des réservations** : Correction du calcul qui oubliait les jours ("4h" au lieu de "2j 4h"). Oups.
 
-### Ajouté
-- **Routeur Principal** : `app/index.php` gérant l'affichage dynamique via le paramètre `?page=`.
-- **Layouts** : Fichiers `header.php` et `footer.php` utilisant Bootstrap 5.
-- **Assets** : Fichiers `style.css` et `script.js` de base.
-- **Page d'accueil** : Vue "Home" fonctionnelle avec bannière de bienvenue.
+---
 
-## [0.1.0] - 2026-01-27 - Initialisation du Projet
+## [Sprint 3] - 2026-02-01
+### ✨ Nouveautés
+- **MA2-13/14/15 Gestion des Réservations** : On peut réserver, modifier et annuler !
+- **Gestion des Conflits** : Impossible de réserver une salle si elle est déjà prise. J'ai sué sur la requête SQL, mais ça marche ! 🛡️
 
-### Ajouté
-- **Documentation Agile** : Guide de processus, guide de collaboration GitHub, Product Backlog initial.
-- **Base de données** : Script SQL de création des tables (`users`, `spaces`, `reservations`).
-- **Configuration** : Fichier `app/config/db.php` pour la connexion PDO.
-- **Structure** : Arborescence de dossiers MVC initiale.
-- **README** : Informations sur le projet, l'équipe et l'installation.
+### 🐛 Corrections
+- **Login Admin** : Il y avait un souci de hachage de mot de passe. J'ai tout régénéré proprement. Plus d'excuses pour ne pas se connecter.
+
+---
+
+## [Sprint 2] - Janvier 2026
+### ✨ Nouveautés
+- **Gestion des Espaces (CRUD)** : Créer, Lire, Mettre à jour, Supprimer des bureaux et salles de réunion. La base quoi.
+- **Auth System** : Login/Logout fonctionnel avec sessions PHP.
+
+---
+
+## [Sprint 1] - Décembre 2025
+### 🚀 Lancement
+- Initialisation du repo.
+- Structure MVC mise en place (dossiers app, models, views, controllers...).
+- Base de données dessinée (MCD/MLD) et intégrée.
+
+---
+
+*Ce fichier est maintenu par Geoffroy. Dernière mise à jour le 2 Février 2026.*

@@ -237,4 +237,23 @@ class Space
             return false;
         }
     }
+
+    /**
+     * Compte le nombre total d'espaces
+     * 
+     * @global PDO $pdo Connexion à la base de données
+     * @return int Nombre d'espaces
+     */
+    public static function countAll()
+    {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->query("SELECT COUNT(*) as count FROM spaces");
+            $result = $stmt->fetch();
+            return (int) $result['count'];
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
 }
