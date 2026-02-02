@@ -1,8 +1,13 @@
 <?php
+// Configuration du fuseau horaire
+date_default_timezone_set('Europe/Paris');
+
 // Point d'entrée de l'application
 
-// 1. Inclusion de la config
+// 1. Inclusion de la config et des fichiers essentiels
 require_once 'config/db.php';
+require_once 'models/Space.php';
+require_once 'helpers/AuthHelper.php';
 
 // 2. Gestion simple du routing
 $page = $_GET['page'] ?? 'home';
@@ -22,14 +27,82 @@ switch ($page) {
         echo '</div>';
         break;
 
+    case 'dashboard':
+        require_once 'controllers/DashboardController.php';
+        $controller = new DashboardController();
+        $controller->index();
+        break;
+
+    case 'planning':
+        require_once 'controllers/PlanningController.php';
+        $controller = new PlanningController();
+        $controller->index();
+        break;
+
     case 'spaces':
-        // TODO: Appeler SpaceController->index()
-        echo '<h2>Liste des espaces (À implémenter)</h2>';
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->index();
+        break;
+
+    case 'spaces-create':
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->create();
+        break;
+
+    case 'spaces-show':
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->show();
+        break;
+
+    case 'spaces-edit':
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->edit();
+        break;
+
+    case 'spaces-delete':
+        require_once 'controllers/SpaceController.php';
+        $controller = new SpaceController();
+        $controller->delete();
         break;
 
     case 'login':
-        // TODO: Appeler AuthController->login()
-        echo '<h2>Connexion (À implémenter)</h2>';
+        require_once 'controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->login();
+        break;
+
+    case 'logout':
+        require_once 'controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->logout();
+        break;
+
+    case 'reservations':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->index();
+        break;
+
+    case 'reservations-create':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->create();
+        break;
+
+    case 'reservations-edit':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->edit();
+        break;
+
+    case 'reservations-delete':
+        require_once 'controllers/ReservationController.php';
+        $controller = new ReservationController();
+        $controller->delete();
         break;
 
     default:
