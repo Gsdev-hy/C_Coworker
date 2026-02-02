@@ -1,4 +1,7 @@
 <?php
+// Configuration du fuseau horaire
+date_default_timezone_set('Europe/Paris');
+
 // Point d'entrée de l'application
 
 // 1. Inclusion de la config et des fichiers essentiels
