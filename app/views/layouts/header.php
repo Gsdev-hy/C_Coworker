@@ -29,6 +29,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=reservations">Réservations</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?page=planning">Planning</a>
+                    </li>
                     <?php if (AuthHelper::isAdmin()): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=dashboard">Dashboard</a>

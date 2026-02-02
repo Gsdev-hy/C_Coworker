@@ -24,6 +24,18 @@ switch ($page) {
         echo '</div>';
         break;
 
+    case 'dashboard':
+        require_once 'controllers/DashboardController.php';
+        $controller = new DashboardController();
+        $controller->index();
+        break;
+
+    case 'planning':
+        require_once 'controllers/PlanningController.php';
+        $controller = new PlanningController();
+        $controller->index();
+        break;
+
     case 'spaces':
         require_once 'controllers/SpaceController.php';
         $controller = new SpaceController();

@@ -46,6 +46,40 @@ class Reservation
     }
 
     /**
+     * Récupère les réservations pour une période donnée
+     * 
+     * @param string $start Date de début (Y-m-d)
+     * @param string $end Date de fin (Y-m-d)
+     * @return array
+     */
+    public static function findByDateRange($start, $end)
+    {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->prepare("
+                SELECT 
+                    r.*, 
+                    s.name as space_name, s.type as space_type,
+                    u.firstname as user_firstname, u.lastname as user_lastname
+                FROM reservations r
+                INNER JOIN spaces s ON r.space_id = s.id
+                INNER JOIN users u ON r.user_id = u.id
+                WHERE r.start_time <= :end AND r.end_time >= :start
+                ORDER BY r.start_time ASC
+            ");
+
+            $stmt->execute([
+                ':start' => $start . ' 00:00:00',
+                ':end' => $end . ' 23:59:59'
+            ]);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
      * Récupère les réservations d'un utilisateur spécifique
      * 
      * @global PDO $pdo Connexion à la base de données
